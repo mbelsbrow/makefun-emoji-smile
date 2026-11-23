@@ -13,11 +13,12 @@
 
 import { mkdirSync, writeFileSync } from "node:fs";
 
-const EMOJI = "😄";
+// U+1F604 Grinning Face with Smiling Eyes, built from its code point.
+const EMOJI = String.fromCodePoint(0x1f604);
 const MAX_CHARS = 8;
 
 function buildLine(): string {
-  return EMOJI;
+  return `${EMOJI}`;
 }
 
 function writeEntry(): void {
