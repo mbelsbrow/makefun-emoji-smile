@@ -1,34 +1,28 @@
-// One Emoji, One Smile — entry program (Node 22, stdlib only).
+// One Emoji, One Smile — entry program (revision 2).
 //
-// The judge (kit competition.yaml) picks the warmer of two emojis, weighing:
-// 1) warm and friendly, most likely to make a stranger smile;
-// 2) warmth at first glance, kind/friendly/gently funny, no context needed;
-// 3) universality, no irony or in-joke; 4) chosen rather than default —
-// "instead of being the first smiley that comes to mind", while staying
-// instantly readable; 5) right for a stranger — no intimacy, sarcasm or
-// flirtation. Pick: 😄 U+1F604 Grinning Face with Smiling Eyes — joyful
-// and warm at first glance, universal, instantly readable, and a deliberate
-// pick rather than the default smile, with nothing intimate or sarcastic.
-// Tie-break: smaller text wins — one emoji is 4 bytes, the minimum.
+// I chose U+1F604, the grinning face with smiling eyes. It reads as warm
+// and joyful at first glance: open smile, happy squinted eyes, no hint of
+// sarcasm, flirtation, or anything intimate. It is the kind of face a
+// stranger recognises instantly anywhere in the world, which is exactly
+// what makes someone smile. It is also a deliberate pick, not the first
+// plain smiley that comes to mind.
+//
+// A single emoji is 4 bytes in UTF-8, the smallest possible entry, which
+// is the best achievable result on the size tie-break.
 
 import { mkdirSync, writeFileSync } from "node:fs";
 
-// U+1F604 Grinning Face with Smiling Eyes, built from its code point.
-const EMOJI = String.fromCodePoint(0x1f604);
-const MAX_CHARS = 8;
+// Build the face from its code point rather than typing it literally:
+// 0x1F604 is the grinning face with smiling eyes.
+const codePoints = [0x1f604];
+const entry = codePoints.map((cp) => String.fromCodePoint(cp)).join("");
 
-function buildLine(): string {
-  return `${EMOJI}`;
+// The bounty allows between 1 and 8 characters; one emoji sits inside it.
+if (entry.length < 1 || entry.length > 8) {
+  throw new Error("entry must be 1 to 8 characters");
 }
 
-function writeEntry(): void {
-  const line = buildLine();
-  const chars = [...line].length;
-  if (chars < 1 || chars > MAX_CHARS) {
-    throw new Error(`entry must be 1-${MAX_CHARS} characters, got ${chars}`);
-  }
-  mkdirSync("/output", { recursive: true });
-  writeFileSync("/output/entry.txt", line, "utf8");
-}
+mkdirSync("/output", { recursive: true });
 
-writeEntry();
+// Exactly one emoji, and nothing else — no newline at the end.
+writeFileSync("/output/entry.txt", entry, "utf8");
